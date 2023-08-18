@@ -87,7 +87,7 @@ public class DashbaordPage {
 	}
 	public boolean isChangePasswordLinkExist() {
 		eleUtil.doClick(profilelink);
-		eleUtil.waitForElementVisible(logoutLink, AppConstants.DEFAULT_LONG_TIMEOUT).isDisplayed();
+		//eleUtil.waitForElementVisible(logoutLink, AppConstants.DEFAULT_LONG_TIMEOUT).isDisplayed();
 
 		return eleUtil.waitForElementVisible(changepassword, AppConstants.DEFAULT_MEDIUM_TIMEOUT).isDisplayed();
 
