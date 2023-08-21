@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -15,10 +16,14 @@ public class DriverFactory {
 	public WebDriver driver;
 	public Properties prop;
 	public OptionsManager optionsManager;
+	public static String highlight;
 	
 	public WebDriver initDriver(Properties prop) {
 		
 		optionsManager = new OptionsManager(prop);
+		
+		highlight = prop.getProperty("highlight").trim();
+
 		
 		String browserName = prop.getProperty("browser").toLowerCase().trim();
 
@@ -26,8 +31,11 @@ public class DriverFactory {
 		
 		if(browserName.equalsIgnoreCase("chrome")) {
 			driver = new ChromeDriver(optionsManager.getChromeOptions());
-					
-		}
+			
+				
+			}
+
+		
 		
 		else if(browserName.equalsIgnoreCase("firefox")) {
 			driver = new FirefoxDriver(optionsManager.getFirefoxOptions());

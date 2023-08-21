@@ -5,7 +5,6 @@ import java.util.Properties;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
-
 import com.qa.smsportal.factory.DriverFactory;
 import com.qz.smsportal.pages.DashbaordPage;
 import com.qz.smsportal.pages.LoginPage;
@@ -19,11 +18,14 @@ public class BaseTest {
 	
 	@BeforeTest
 	public void setup() {
-		df= new DriverFactory();	
-		prop =	df.initProp();
-		driver =df.initDriver(prop);
+		df = new DriverFactory();
+		prop = df.initProp();
+		
+		
+		driver = df.initDriver(prop);
 		loginPage = new LoginPage(driver);
 		
+
 	}
 	
 	
