@@ -17,34 +17,41 @@ public class DriverFactory {
 	public Properties prop;
 	public OptionsManager optionsManager;
 	public static String highlight;
-	
+	public static ThreadLocal<WebDriver> tlDriver =new ThreadLocal<WebDriver>();
+	/**
+	 * this method is initializing the driver on the basis of given browser name
+	 * 
+	 * @param browserName
+	 * @return this returns the driver
+	 */
 	public WebDriver initDriver(Properties prop) {
 		
 		optionsManager = new OptionsManager(prop);
 		
 		highlight = prop.getProperty("highlight").trim();
 
-		
 		String browserName = prop.getProperty("browser").toLowerCase().trim();
-
+		
 		System.out.println("browser name is "+ " "+ browserName);
 		
 		if(browserName.equalsIgnoreCase("chrome")) {
-			driver = new ChromeDriver(optionsManager.getChromeOptions());
+			//driver = new ChromeDriver(optionsManager.getChromeOptions());
 			
-				
+			
+				tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
 			}
 
 		
 		
 		else if(browserName.equalsIgnoreCase("firefox")) {
-			driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
+			//driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
+			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
 					
 		}
 		
 		else if(browserName.equalsIgnoreCase("edge")) {
-			driver = new EdgeDriver(optionsManager.getEdgeOptions());
-					
+			//driver = new EdgeDriver(optionsManager.getEdgeOptions());
+					tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
 		}
 		
 		else {
@@ -52,13 +59,18 @@ public class DriverFactory {
 		}
 		
 		
-		driver.manage().deleteAllCookies();
-		driver.manage().window().maximize();
-
-		driver.get(prop.getProperty("url"));
-		return driver;	
+		getDriver().manage().deleteAllCookies();
+		getDriver().manage().window().maximize();
+		getDriver().get(prop.getProperty("url").trim());
+		return getDriver();
 		
 	}
+	// get local thread copy of the driver
+	public synchronized static WebDriver getDriver() {
+		return tlDriver.get();
+	}
+
+	   // this method reading of properties form the .config properties file.
 	
 	public Properties initProp() {
 		prop = new Properties();
